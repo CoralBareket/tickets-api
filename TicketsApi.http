@@ -163,3 +163,8 @@ DELETE {{TicketsApi_HostAddress}}/api/tickets/{{nonExistentId}}
 ### Test invalid route parameter
 # Expected: 404 Not Found
 GET {{TicketsApi_HostAddress}}/api/tickets/abc
+
+### Verify seeded tickets
+# Expected: 200 OK with seeded tickets
+GET {{TicketsApi_HostAddress}}/api/tickets
+Accept: application/json

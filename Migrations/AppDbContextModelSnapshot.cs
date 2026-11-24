@@ -53,6 +53,35 @@ namespace TicketsApi.Migrations
                     b.HasIndex("Status");
 
                     b.ToTable("Tickets");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CreatedAt = new DateTime(2026, 11, 20, 9, 0, 0, 0, DateTimeKind.Utc),
+                            Description = "User receives an error when attempting to sign in.",
+                            Priority = "High",
+                            Status = "Open",
+                            Title = "Unable to log in"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CreatedAt = new DateTime(2026, 11, 21, 10, 30, 0, 0, DateTimeKind.Utc),
+                            Description = "The dashboard takes several seconds to display data.",
+                            Priority = "Medium",
+                            Status = "InProgress",
+                            Title = "Dashboard loading slowly"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CreatedAt = new DateTime(2026, 11, 22, 14, 0, 0, 0, DateTimeKind.Utc),
+                            Description = "The profile image was not updated after uploading a new one.",
+                            Priority = "Low",
+                            Status = "Closed",
+                            Title = "Incorrect profile image"
+                        });
                 });
 #pragma warning restore 612, 618
         }
