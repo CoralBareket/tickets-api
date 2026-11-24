@@ -15,7 +15,7 @@ Content-Type: application/json
 {
     "title": "Login issue",
     "description": "Unable to sign in to the application",
-    "priority": 2
+    "priority": "High"
 }
 
 ### Create another ticket
@@ -26,7 +26,7 @@ Content-Type: application/json
 {
     "title": "UI bug",
     "description": "Navigation menu is not displaying correctly",
-    "priority": 0
+    "priority": "Medium"
 }
 
 ### Get ticket by ID
@@ -86,7 +86,7 @@ Content-Type: application/json
 {
     "title": "Login issue",
     "description": "Unable to sign in",
-    "priority": 999
+    "priority": "InvalidPriority"
 }
 
 ### Create ticket with whitespace-only title
@@ -97,7 +97,7 @@ Content-Type: application/json
 {
     "title": "   ",
     "description": "Unable to sign in",
-    "priority": 1
+    "priority": "Medium"
 }
 
 ### Update ticket status
@@ -106,7 +106,7 @@ PATCH {{TicketsApi_HostAddress}}/api/tickets/{{ticketId}}/status
 Content-Type: application/json
 
 {
-    "status": 1
+    "status": "InProgress"
 }
 
 ### Close ticket
@@ -115,7 +115,7 @@ PATCH {{TicketsApi_HostAddress}}/api/tickets/{{ticketId}}/status
 Content-Type: application/json
 
 {
-    "status": 2
+    "status": "Closed"
 }
 
 ### Verify updated ticket status
@@ -129,7 +129,7 @@ PATCH {{TicketsApi_HostAddress}}/api/tickets/{{nonExistentId}}/status
 Content-Type: application/json
 
 {
-    "status": 1
+    "status": "Closed"
 }
 
 ### Update ticket with invalid status
@@ -138,7 +138,7 @@ PATCH {{TicketsApi_HostAddress}}/api/tickets/{{ticketId}}/status
 Content-Type: application/json
 
 {
-    "status": 999
+    "status": "InvalidStatus"
 }
 
 ### Update ticket with missing status
