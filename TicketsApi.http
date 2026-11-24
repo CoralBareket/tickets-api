@@ -1,3 +1,165 @@
 @TicketsApi_HostAddress = http://localhost:5115
+@ticketId = 1
+@nonExistentId = 999999
 
-###
+### Get all tickets
+# Expected: 200 OK
+GET {{TicketsApi_HostAddress}}/api/tickets
+Accept: application/json
+
+### Create a valid ticket
+# Expected: 201 Created + Location header
+POST {{TicketsApi_HostAddress}}/api/tickets
+Content-Type: application/json
+
+{
+    "title": "Login issue",
+    "description": "Unable to sign in to the application",
+    "priority": 2
+}
+
+### Create another ticket
+# Expected: 201 Created
+POST {{TicketsApi_HostAddress}}/api/tickets
+Content-Type: application/json
+
+{
+    "title": "UI bug",
+    "description": "Navigation menu is not displaying correctly",
+    "priority": 0
+}
+
+### Get ticket by ID
+# Expected: 200 OK
+GET {{TicketsApi_HostAddress}}/api/tickets/{{ticketId}}
+Accept: application/json
+
+### Get nonexistent ticket
+# Expected: 404 Not Found
+GET {{TicketsApi_HostAddress}}/api/tickets/{{nonExistentId}}
+
+### Filter tickets by status
+# Expected: 200 OK
+GET {{TicketsApi_HostAddress}}/api/tickets?status=Open
+Accept: application/json
+
+### Filter tickets by priority
+# Expected: 200 OK
+GET {{TicketsApi_HostAddress}}/api/tickets?priority=High
+Accept: application/json
+
+### Filter tickets by status and priority
+# Expected: 200 OK
+GET {{TicketsApi_HostAddress}}/api/tickets?status=Open&priority=High
+Accept: application/json
+
+### Filter tickets by invalid status
+# Expected: 400 Bad Request
+GET {{TicketsApi_HostAddress}}/api/tickets?status=Invalid
+
+### Filter tickets by invalid priority
+# Expected: 400 Bad Request
+GET {{TicketsApi_HostAddress}}/api/tickets?priority=999
+
+### Create ticket with missing required fields
+# Expected: 400 Bad Request
+POST {{TicketsApi_HostAddress}}/api/tickets
+Content-Type: application/json
+
+{}
+
+### Create ticket with missing priority
+# Expected: 400 Bad Request
+POST {{TicketsApi_HostAddress}}/api/tickets
+Content-Type: application/json
+
+{
+    "title": "Login issue",
+    "description": "Unable to sign in"
+}
+
+### Create ticket with invalid priority
+# Expected: 400 Bad Request
+POST {{TicketsApi_HostAddress}}/api/tickets
+Content-Type: application/json
+
+{
+    "title": "Login issue",
+    "description": "Unable to sign in",
+    "priority": 999
+}
+
+### Create ticket with whitespace-only title
+# Expected: 400 Bad Request
+POST {{TicketsApi_HostAddress}}/api/tickets
+Content-Type: application/json
+
+{
+    "title": "   ",
+    "description": "Unable to sign in",
+    "priority": 1
+}
+
+### Update ticket status
+# Expected: 200 OK
+PATCH {{TicketsApi_HostAddress}}/api/tickets/{{ticketId}}/status
+Content-Type: application/json
+
+{
+    "status": 1
+}
+
+### Close ticket
+# Expected: 200 OK
+PATCH {{TicketsApi_HostAddress}}/api/tickets/{{ticketId}}/status
+Content-Type: application/json
+
+{
+    "status": 2
+}
+
+### Verify updated ticket status
+# Expected: 200 OK with updated status
+GET {{TicketsApi_HostAddress}}/api/tickets/{{ticketId}}
+Accept: application/json
+
+### Update nonexistent ticket
+# Expected: 404 Not Found
+PATCH {{TicketsApi_HostAddress}}/api/tickets/{{nonExistentId}}/status
+Content-Type: application/json
+
+{
+    "status": 1
+}
+
+### Update ticket with invalid status
+# Expected: 400 Bad Request
+PATCH {{TicketsApi_HostAddress}}/api/tickets/{{ticketId}}/status
+Content-Type: application/json
+
+{
+    "status": 999
+}
+
+### Update ticket with missing status
+# Expected: 400 Bad Request
+PATCH {{TicketsApi_HostAddress}}/api/tickets/{{ticketId}}/status
+Content-Type: application/json
+
+{}
+
+### Delete ticket
+# Expected: 204 No Content
+DELETE {{TicketsApi_HostAddress}}/api/tickets/{{ticketId}}
+
+### Verify ticket was deleted
+# Expected: 404 Not Found
+GET {{TicketsApi_HostAddress}}/api/tickets/{{ticketId}}
+
+### Delete nonexistent ticket
+# Expected: 404 Not Found
+DELETE {{TicketsApi_HostAddress}}/api/tickets/{{nonExistentId}}
+
+### Test invalid route parameter
+# Expected: 404 Not Found
+GET {{TicketsApi_HostAddress}}/api/tickets/abc
