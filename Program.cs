@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using TicketsApi.Data;
+using TicketsApi.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +12,7 @@ builder.Services.AddOpenApi();
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlite(
         builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddScoped<ITicketService, TicketService>();
 
 var app = builder.Build();
 
