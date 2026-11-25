@@ -72,7 +72,15 @@ public class TicketService : ITicketService
         }
 
         ticket.Status = dto.Status!.Value;
-        await _context.SaveChangesAsync();
+
+        try
+        {
+            await _context.SaveChangesAsync();
+        }
+        catch (DbUpdateConcurrencyException)
+        {
+            return null;
+        }
 
         return ticket.ToDto();
     }
@@ -87,7 +95,15 @@ public class TicketService : ITicketService
         }
 
         _context.Tickets.Remove(ticket);
-        await _context.SaveChangesAsync();
+
+        try
+        {
+            await _context.SaveChangesAsync();
+        }
+        catch (DbUpdateConcurrencyException)
+        {
+            return false;
+        }
 
         return true;
     }
