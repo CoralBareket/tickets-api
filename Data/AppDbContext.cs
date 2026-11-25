@@ -36,7 +36,10 @@ public class AppDbContext : DbContext
                 .HasMaxLength(20);
 
             entity.Property(t => t.CreatedAt)
-                .IsRequired();
+                .IsRequired()
+                .HasConversion(
+                    v => v,
+                    v => DateTime.SpecifyKind(v, DateTimeKind.Utc));
 
             entity.HasIndex(t => t.Status);
             entity.HasIndex(t => t.Priority);
